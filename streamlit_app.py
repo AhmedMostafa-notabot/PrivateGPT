@@ -2,7 +2,7 @@ import streamlit as st
 # from langchain.llms import GPT4All
 from langchain.llms import OpenAI
 
-st.title('🦜🔗 Quickstart App')
+st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!')
 
