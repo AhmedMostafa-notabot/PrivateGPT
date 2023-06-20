@@ -22,8 +22,9 @@ def generate_response2(input_text):
   st.info(pdf_qa({'question': str(input_text)})['answer'])
 
 with st.form('my_form'):
-  text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
+  text = st.text_area('Enter text:', 'Ask Me Anything')
   submitted = st.form_submit_button('Submit')
+  finished = st.form_submit_button('Done')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
@@ -47,3 +48,6 @@ with st.form('my_form'):
   #   generate_response(text)
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
+  if finished and openai_api_key.startswith('sk-'):
+    uploaded_file_pdf=None
+    generate_response(text)
