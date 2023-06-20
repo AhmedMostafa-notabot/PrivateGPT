@@ -24,7 +24,7 @@ with st.form('my_form'):
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
-  if uploaded_file_pdf[0]:
+  if len(uploaded_file_pdf)!=0:
     path=uploaded_file_pdf[0].read()
     loader = PyPDFLoader(path)
     pages = loader.load_and_split()
@@ -37,5 +37,5 @@ with st.form('my_form'):
   if submitted and openai_api_key.startswith('sk-'):
     print(text)
     generate_response(text)
-  if uploaded_file_pdf[0] and submitted and openai_api_key.startswith('sk-'):
+  if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
