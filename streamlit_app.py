@@ -41,8 +41,8 @@ with st.form('my_form'):
     vectordb.persist()
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.8) , vectordb.as_retriever(), memory=memory)
-  if submitted and openai_api_key.startswith('sk-'):
-    print(text)
-    generate_response(text)
+  # if submitted and openai_api_key.startswith('sk-'):
+  #   print(text)
+  #   generate_response(text)
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
