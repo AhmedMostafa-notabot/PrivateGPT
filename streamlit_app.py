@@ -17,7 +17,7 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if uploaded_file_pdf:
-    path=uploaded_file_pdf.read()
+    path=uploaded_file_pdf[0].read()
     print(path)
   if submitted and openai_api_key.startswith('sk-'):
     print(text)
