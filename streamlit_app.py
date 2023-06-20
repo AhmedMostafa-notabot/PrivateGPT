@@ -6,7 +6,7 @@ st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!')
 uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"], accept_multiple_files=True)
-print(uploaded_file_pdf[0])
+print(uploaded_file_pdf)
 def generate_response(input_text):
   llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
