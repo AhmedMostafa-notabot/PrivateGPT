@@ -1,5 +1,10 @@
 import streamlit as st
 # from langchain.llms import GPT4All
+from langchain.document_loaders import PyPDFLoader 
+from langchain.embeddings import OpenAIEmbeddings 
+from langchain.vectorstores import Chroma 
+from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -18,7 +23,8 @@ with st.form('my_form'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if uploaded_file_pdf:
     path=uploaded_file_pdf[0].read()
-    print(path)
+    loader = PyPDFLoader(path)
+    pages = loader.load_and_split()
   if submitted and openai_api_key.startswith('sk-'):
     print(text)
     generate_response(text)
