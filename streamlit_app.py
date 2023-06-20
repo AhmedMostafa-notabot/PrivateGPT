@@ -41,7 +41,7 @@ with st.form('my_form'):
                                      persist_directory=".")
     vectordb.persist()
     # memory = ConversationTokenBufferMemory(memory_key="chat_history",llm=OpenAI(temperature=0.7,model_name='text-davinci-003'),max_token_limit=100)
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(),max_tokens_limit=3200)
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(),max_tokens_limit=4096)
   # if submitted and openai_api_key.startswith('sk-'):
   #   print(text)
   #   generate_response(text)
