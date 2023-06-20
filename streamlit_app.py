@@ -5,7 +5,7 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import Chroma 
 from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationTokenBufferMemory
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -40,7 +40,7 @@ with st.form('my_form'):
     vectordb = Chroma.from_texts(text, embedding=embeddings, 
                                      persist_directory=".")
     vectordb.persist()
-    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True,max_token_limit=50)
+    memory = ConversationTokenBufferMemory(memory_key="chat_history",max_token_limit=50)
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(),memory=memory,max_tokens_limit=4000)
   # if submitted and openai_api_key.startswith('sk-'):
   #   print(text)
