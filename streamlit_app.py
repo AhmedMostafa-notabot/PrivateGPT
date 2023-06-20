@@ -18,7 +18,7 @@ def generate_response(input_text):
   st.info(llm(input_text))
 def generate_response2(input_text):
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  st.info(pdf_qa({"input": input_text})['answer'])
+  st.info(pdf_qa({'question': input_text})['answer'])
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
