@@ -12,7 +12,8 @@ st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
 uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"], accept_multiple_files=True)
-col1, col2 = st.columns(2)
+finished = st.sidebar.button('Remove PDF')
+# col1, col2 = st.columns(2)
 def generate_response(input_text):
   llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
@@ -25,8 +26,7 @@ def generate_response2(input_text):
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
   submitted = st.form_submit_button('Submit')
-  with col2:
-    finished = st.form_submit_button('Done')
+  # with col2:
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
