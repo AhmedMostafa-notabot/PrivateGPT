@@ -1,4 +1,6 @@
 streamlit
 openai
+pypdf
 langchain
 gpt4all
+chromadb
