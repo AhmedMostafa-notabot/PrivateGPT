@@ -24,8 +24,7 @@ def generate_response2(input_text):
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
-  with col1:
-    submitted = st.form_submit_button('Submit')
+  submitted = st.form_submit_button('Submit')
   with col2:
     finished = st.form_submit_button('Done')
   if not openai_api_key.startswith('sk-'):
