@@ -5,7 +5,7 @@ from langchain.llms import OpenAI
 st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!')
-uploaded_file_pdf = st.sidebar.file_uploader(“Upload PDF Files”,type=[‘pdf’], accept_multiple_files=True)
+uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"], accept_multiple_files=True)
 
 def generate_response(input_text):
   llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
