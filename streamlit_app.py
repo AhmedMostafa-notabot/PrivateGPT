@@ -19,7 +19,7 @@ def generate_response(input_text):
 def generate_response2(input_text):
   print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  st.info(pdf_qa({'question': str(input_text),'chat_history':""})['answer'])
+  st.info(pdf_qa({'question': str(input_text)})['answer'])
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'What are the three key pieces of advice for learning how to code?')
@@ -41,7 +41,7 @@ with st.form('my_form'):
                                      persist_directory=".")
     vectordb.persist()
     memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.7,model_name='text-davinci-003'),max_token_limit=100)
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(),memory=memory,max_tokens_limit=3200)
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(search_kwargs={"k": 1}),memory=memory,max_tokens_limit=3200)
   # if submitted and openai_api_key.startswith('sk-'):
   #   print(text)
   #   generate_response(text)
