@@ -43,7 +43,6 @@ with st.form('my_form'):
   
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
-  if finished and openai_api_key.startswith('sk-'):
-    vectordb=None
+  if finished and submitted and openai_api_key.startswith('sk-'):
     uploaded_file_pdf=None
     generate_response(text)
