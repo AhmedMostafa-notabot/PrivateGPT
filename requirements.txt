@@ -1,5 +1,5 @@
 streamlit
 openai
-pdfplumber
+pypdf
 langchain
 chromadb
