@@ -26,14 +26,17 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
+    text=[]
     # path=uploaded_file_pdf[0].read()
     # print(path)
     # loader = PyPDFLoader(path)
     # pages = loader.load_and_split()
     pdf = PdfReader(uploaded_file_pdf[0])
     pages=pdf.pages
+    for i in pages:
+      text.append(i.extract_text())
     embeddings = OpenAIEmbeddings()
-    vectordb = Chroma.from_documents(pages, embedding=embeddings, 
+    vectordb = Chroma.from_texts(text, embedding=embeddings, 
                                      persist_directory=".")
     vectordb.persist()
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
