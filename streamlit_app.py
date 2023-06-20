@@ -26,6 +26,7 @@ with st.form('my_form'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
     path=uploaded_file_pdf[0].read()
+    print(path)
     loader = PyPDFLoader(path)
     pages = loader.load_and_split()
     embeddings = OpenAIEmbeddings()
