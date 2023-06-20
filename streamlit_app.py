@@ -26,15 +26,10 @@ def generate_response2(input_text):
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
   submitted = st.form_submit_button('Submit')
-  # with col2:
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
     text=[]
-    # path=uploaded_file_pdf[0].read()
-    # print(path)
-    # loader = PyPDFLoader(path)
-    # pages = loader.load_and_split()
     pdf = PdfReader(uploaded_file_pdf[0])
     pages=pdf.pages
     for i in pages:
@@ -45,11 +40,12 @@ with st.form('my_form'):
     vectordb.persist()
     memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k'))
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(),memory=memory)
-  # if submitted and openai_api_key.startswith('sk-'):
-  #   print(text)
-  #   generate_response(text)
+  
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
+    finished=False
     generate_response2(text)
   if finished and openai_api_key.startswith('sk-'):
+    vectordb=None
+    submitted=False
     uploaded_file_pdf=None
     generate_response(text)
