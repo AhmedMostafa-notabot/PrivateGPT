@@ -17,7 +17,7 @@ finished = st.sidebar.button('Remove PDF')
 def generate_response(input_text):
   llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  st.info(llm(input_text))
+  st.info(llm(str(input_text)))
 def generate_response2(input_text):
   print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
