@@ -30,7 +30,7 @@ with st.form('my_form'):
     # print(path)
     # loader = PyPDFLoader(path)
     # pages = loader.load_and_split()
-    pdf = pdfplumber.open(uploaded_file_pdf[0])
+    pdf = PdfReader(uploaded_file_pdf[0])
     pages=pdf.pages
     embeddings = OpenAIEmbeddings()
     vectordb = Chroma.from_documents(pages, embedding=embeddings, 
