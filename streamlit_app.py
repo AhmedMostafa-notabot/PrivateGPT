@@ -1,6 +1,6 @@
 import streamlit as st
 # from langchain.llms import GPT4All
-import pdfplumber
+from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import Chroma 
