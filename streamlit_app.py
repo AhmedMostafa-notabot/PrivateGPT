@@ -40,7 +40,7 @@ with st.form('my_form'):
     vectordb = Chroma.from_texts(text, embedding=embeddings, 
                                      persist_directory=".")
     vectordb.persist()
-    memory = ConversationTokenBufferMemory(memory_key="chat_history",max_token_limit=50)
+    memory = ConversationTokenBufferMemory(memory_key="chat_history",llm=OpenAI(temperature=0.7,model_name='text-davinci-003'),max_token_limit=50)
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='text-davinci-003') , vectordb.as_retriever(),memory=memory,max_tokens_limit=4000)
   # if submitted and openai_api_key.startswith('sk-'):
   #   print(text)
