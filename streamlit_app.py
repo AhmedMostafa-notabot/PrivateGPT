@@ -30,9 +30,10 @@ with st.form('my_form'):
     # print(path)
     # loader = PyPDFLoader(path)
     # pages = loader.load_and_split()
-    print(uploaded_file_pdf[0])
+    pdf = pdfplumber.load(uploaded_file_pdf[0])
+    pages=pdf.pages
     embeddings = OpenAIEmbeddings()
-    vectordb = Chroma.from_documents(uploaded_file_pdf[0], embedding=embeddings, 
+    vectordb = Chroma.from_documents(pages, embedding=embeddings, 
                                      persist_directory=".")
     vectordb.persist()
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
