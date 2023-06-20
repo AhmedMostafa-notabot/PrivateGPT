@@ -42,10 +42,8 @@ with st.form('my_form'):
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(),memory=memory)
   
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
-    finished=False
     generate_response2(text)
   if finished and openai_api_key.startswith('sk-'):
     vectordb=None
-    submitted=False
     uploaded_file_pdf=None
     generate_response(text)
