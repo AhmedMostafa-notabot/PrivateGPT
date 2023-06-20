@@ -12,7 +12,7 @@ st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
 uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"], accept_multiple_files=True)
-finished = st.sidebar.button('Remove PDF')
+# finished = st.sidebar.button('Remove PDF')
 # col1, col2 = st.columns(2)
 def generate_response(input_text):
   llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
@@ -43,6 +43,5 @@ with st.form('my_form'):
   
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
-  if finished and submitted and openai_api_key.startswith('sk-'):
-    uploaded_file_pdf=None
+  if len(uploaded_file_pdf)==0  and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
