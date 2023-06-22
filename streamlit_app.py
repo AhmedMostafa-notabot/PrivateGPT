@@ -36,12 +36,12 @@ def preprocess(text):
 
 def summarize_text(text):
 
-  prompt =   [{"role": "user", "content": f"Summarize this in 7 sentences:\n{text}"}]
+  prompt =   [{"role": "user", "content": f"Summarize this in 5 sentences:\n{text}"}]
   response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo", 
       messages=prompt,
       temperature=0.2, 
-      max_tokens=150, # = 112 words
+      max_tokens=135, # = 112 words
       top_p=0.9, 
       frequency_penalty=1,
       presence_penalty=0
