@@ -60,14 +60,11 @@ with st.form('my_form'):
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
-    minstep=min(len(pages),13)
+    minstep=min(len(pages),30)
     for i in pages:
       text.append(preprocess(i.extract_text()))
     for i in range(0,len(text),minstep):
-      try:
-        sumtext.append(summarize_text(''.join(text[i:i+minstep])))
-      except:
-        break
+      sumtext.append(summarize_text(''.join(text[i:i+minstep])))
     embeddings = OpenAIEmbeddings()
     vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
