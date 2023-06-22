@@ -1,4 +1,5 @@
 import streamlit as st
+import openai
 # from langchain.llms import GPT4All
 from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
