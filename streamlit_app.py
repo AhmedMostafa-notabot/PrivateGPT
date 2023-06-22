@@ -42,7 +42,7 @@ def summarize_text(text):
       model="gpt-3.5-turbo", 
       messages=prompt,
       temperature=0.2, 
-      max_tokens=100,
+      max_tokens=135,
       top_p=0.9, 
       frequency_penalty=1,
       presence_penalty=0
@@ -60,7 +60,7 @@ with st.form('my_form'):
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
-    minstep=min(len(pages),15)
+    minstep=min(len(pages),13)
     for i in pages:
       text.append(preprocess(i.extract_text()))
     for i in range(0,len(text),minstep):
