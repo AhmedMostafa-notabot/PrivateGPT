@@ -7,7 +7,7 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import Chroma 
 from langchain.chains import ConversationalRetrievalChain
-# from langchain.memory import ConversationTokenBufferMemory
+from langchain.memory import ConversationBufferWindowMemory
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -21,13 +21,13 @@ def generate_response(input_text):
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   st.info(llm(str(input_text)))
 
-def generate_response2(input_text,history):
+def generate_response2(input_text):
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  out=pdf_qa({'question': str(input_text),'chat_history':history})['answer']
+  out=pdf_qa({'question': str(input_text)})['answer']
   st.info(out)
-  history=[{str(input_text),out}]
-  return history
+  # history=[{str(input_text),out}]
+  # return history
   
 def preprocess(text):
     text = text.replace('\n', ' ')
@@ -66,16 +66,17 @@ with st.form('my_form'):
     vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
     # vectordb.persist()
-    chat_history=[]
+    # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(search_type='similarity',search_kwargs={"k":5}))
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k',max_tokens=300,frequency_penalty=1,presence_penalty=0),
+                                                   vectordb.as_retriever(search_type='similarity',search_kwargs={"k":2}),memory=ConversationBufferWindowMemory(k=1))
   else:
     try:
       vectordb.delete_collection()
-      chat_history=[]
+      # chat_history=[]
     except:
       pass
   if uploaded_file_pdf is not None and submitted and openai_api_key.startswith('sk-'):
-    chat_history=generate_response2(text,chat_history)
+    generate_response2(text,chat_history)
   if uploaded_file_pdf is None and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
