@@ -40,7 +40,7 @@ def summarize_text(text):
   response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo", 
       messages=prompt,
-      temperature=0.4, 
+      temperature=0.2, 
       max_tokens=135, # = 112 words
       top_p=0.9, 
       frequency_penalty=1,
@@ -68,7 +68,7 @@ with st.form('my_form'):
     # vectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k',max_tokens=300,frequency_penalty=1,presence_penalty=0),
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',max_tokens=300,frequency_penalty=1,presence_penalty=0),
                                                    vectordb.as_retriever(search_type='similarity',search_kwargs={"k":2}),memory=ConversationBufferWindowMemory(k=1))
   else:
     try:
@@ -77,6 +77,6 @@ with st.form('my_form'):
     except:
       pass
   if uploaded_file_pdf is not None and submitted and openai_api_key.startswith('sk-'):
-    generate_response2(text,chat_history)
+    generate_response2(text)
   if uploaded_file_pdf is None and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
