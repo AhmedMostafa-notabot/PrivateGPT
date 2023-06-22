@@ -73,7 +73,7 @@ with st.form('my_form'):
     # vectordb.persist()
     # chat_history=[]
     memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',max_tokens=300,frequency_penalty=1,presence_penalty=0),
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',max_tokens=135,frequency_penalty=1,presence_penalty=0),
                                                    vectordb.as_retriever(search_type='similarity',search_kwargs={"k":1}),memory=memory)
     # ,memory=ConversationBufferWindowMemory(memory_key="chat_history",k=1,return_messages=True)
   else:
