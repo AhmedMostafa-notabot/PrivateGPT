@@ -28,7 +28,7 @@ def summarize_text(text):
 
   prompt =   [{"role": "user", "content": f"Summarize the following text in 6 sentences:\n{text}"}]
   response = openai.ChatCompletion.create(
-      engine="gpt-3.5-turbo", 
+      model="gpt-3.5-turbo", 
       messages=prompt,
       temperature=0.4, 
       max_tokens=150, # = 112 words
