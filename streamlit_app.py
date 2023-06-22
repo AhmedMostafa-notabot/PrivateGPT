@@ -64,7 +64,7 @@ with st.form('my_form'):
       text.append(preprocess(i.extract_text()))
     for i in range(0,len(text),minstep):
       try:
-        sumtext.append(summarize_text(''.join(text[i:i+minstep])))
+        sumtext.append([summarize_text(''.join(text[i:i+minstep]))])
       except:
         break
     embeddings = OpenAIEmbeddings()
