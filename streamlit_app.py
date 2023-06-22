@@ -6,7 +6,7 @@ from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import Chroma 
-from langchain.chains import RetrievalQA
+from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationTokenBufferMemory
 from langchain.llms import OpenAI
 
