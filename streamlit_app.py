@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import re
 # from langchain.llms import GPT4All
 from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
@@ -19,6 +20,7 @@ def generate_response(input_text):
   llm = OpenAI(temperature=0.5, openai_api_key=openai_api_key)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   st.info(llm(str(input_text)))
+
 def generate_response2(input_text,history):
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
@@ -27,6 +29,11 @@ def generate_response2(input_text,history):
   history=[{str(input_text),out}]
   return history
   
+def preprocess(text):
+    text = text.replace('\n', ' ')
+    text = re.sub('\s+', ' ', text)
+    return text
+
 def summarize_text(text):
 
   prompt =   [{"role": "user", "content": f"Summarize this in 5 sentences:\n{text}"}]
@@ -54,7 +61,7 @@ with st.form('my_form'):
     pages=pdf.pages
     for i in pages:
       # text.append(i.extract_text())
-      sumtext.append(summarize_text(i.extract_text()))
+      sumtext.append(summarize_text(preprocess(i.extract_text())))
     embeddings = OpenAIEmbeddings()
     vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
