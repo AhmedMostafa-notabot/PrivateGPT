@@ -24,7 +24,8 @@ def generate_response(input_text):
 def generate_response2(input_text):
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  out=pdf_qa({'question': str(input_text)})['answer']
+  # out=pdf_qa({'question': str(input_text)})['answer']
+  out=pdf_qa.run(str(input_text))
   st.info(out)
   # history=[{str(input_text),out}]
   
