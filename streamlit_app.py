@@ -64,7 +64,10 @@ with st.form('my_form'):
     for i in pages:
       text.append(preprocess(i.extract_text()))
     for i in range(0,len(text),minstep):
-      sumtext.append(summarize_text(''.join(text[i:i+minstep])))
+      try:
+        sumtext.append(summarize_text(''.join(text[i:i+minstep])))
+      except:
+        pass
     embeddings = OpenAIEmbeddings()
     vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
