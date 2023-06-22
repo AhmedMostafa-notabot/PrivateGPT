@@ -19,9 +19,24 @@ def generate_response(input_text):
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   st.info(llm(str(input_text)))
 def generate_response2(input_text):
-  print(input_text)
+  # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   st.info(pdf_qa({'question': str(input_text)})['answer'])
+  
+def summarize_text(text):
+  prompt = f"Summarize the following text in 6 sentences:\n{text}"
+
+  response = openai.Completion.create(
+      engine="gpt-3.5-turbo", 
+      prompt=prompt,
+      temperature=0.4, 
+      max_tokens=150, # = 112 words
+      top_p=0.9, 
+      frequency_penalty=1,
+      presence_penalty=0
+  )
+
+  return response["choices"][0]["text"]
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
@@ -29,13 +44,15 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf)!=0:
-    text=[]
+    # text=[]
+    sumtext=[]
     pdf = PdfReader(uploaded_file_pdf[0])
     pages=pdf.pages
     for i in pages:
-      text.append(i.extract_text())
+      # text.append(i.extract_text())
+      sumtext.append(summarize_text(i.extract_text()))
     embeddings = OpenAIEmbeddings()
-    vectordb = Chroma.from_texts(text, embedding=embeddings, 
+    vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
     vectordb.persist()
     memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k'))
