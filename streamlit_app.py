@@ -29,7 +29,7 @@ def generate_response2(input_text,history):
   
 def summarize_text(text):
 
-  prompt =   [{"role": "user", "content": f"Summarize the following text in 6 sentences:\n{text}"}]
+  prompt =   [{"role": "user", "content": f"Summarize the following text in 5 sentences:\n{text}"}]
   response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo", 
       messages=prompt,
@@ -61,7 +61,7 @@ with st.form('my_form'):
     vectordb.persist()
     chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(search_type='similarity',search_kwargs={"k":2}))
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(search_type='similarity',search_kwargs={"k":5}))
   else:
     try:
       vectordb.delete_collection()
