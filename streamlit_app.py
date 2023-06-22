@@ -63,7 +63,7 @@ with st.form('my_form'):
       vectordb.delete_collection()
     except:
       pass
-  if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
+  if uploaded_file_pdf is not None and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
-  if len(uploaded_file_pdf)==0  and submitted and openai_api_key.startswith('sk-'):
+  if uploaded_file_pdf is None and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
