@@ -37,7 +37,7 @@ def summarize_text(text):
       presence_penalty=0
   )
 
-  return response["choices"][0]["text"]
+  return response["choices"][0]['message']['content']
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
