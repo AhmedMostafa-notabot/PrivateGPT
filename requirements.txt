@@ -1,6 +1,7 @@
 streamlit
 openai
 PyPDF2
+re
 langchain
 chromadb
 tiktoken
