@@ -24,7 +24,7 @@ def generate_response(input_text):
 def generate_response2(input_text):
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
-  out=pdf_qa({'question': str(input_text)})['answer']
+  out=pdf_qa({'question': str(input_text),'chat_history':[]})['answer']
   st.info(out)
   # history=[{str(input_text),out}]
   # return history
@@ -74,7 +74,8 @@ with st.form('my_form'):
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',max_tokens=300,frequency_penalty=1,presence_penalty=0),
-                                                   vectordb.as_retriever(search_type='similarity',search_kwargs={"k":2}),memory=ConversationBufferWindowMemory(memory_key="chat_history",k=1,return_messages=True))
+                                                   vectordb.as_retriever(search_type='similarity',search_kwargs={"k":2}))
+    # ,memory=ConversationBufferWindowMemory(memory_key="chat_history",k=1,return_messages=True)
   else:
     try:
       vectordb.delete_collection()
