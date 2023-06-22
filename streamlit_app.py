@@ -68,7 +68,7 @@ with st.form('my_form'):
     # vectordb.persist()
     chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(search_type='similarity',search_kwargs={"k":5}),chain_type="map_reduce")
+    pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(search_type='similarity',search_kwargs={"k":5}))
   else:
     try:
       vectordb.delete_collection()
