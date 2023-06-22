@@ -59,7 +59,7 @@ with st.form('my_form'):
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
-    minstep=min(len(pages),15)
+    minstep=min(len(pages),10)
     for i in pages:
       text.append(preprocess(i.extract_text()))
     for i in range(0,len(text),minstep):
