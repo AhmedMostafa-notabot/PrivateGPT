@@ -12,7 +12,7 @@ from langchain.llms import OpenAI
 st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
-uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"], accept_multiple_files=True)
+uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"])
 # finished = st.sidebar.button('Remove PDF')
 # col1, col2 = st.columns(2)
 def generate_response(input_text):
@@ -44,10 +44,10 @@ with st.form('my_form'):
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
-  if len(uploaded_file_pdf)!=0:
+  if uploaded_file_pdf is not None:
     # text=[]
     sumtext=[]
-    pdf = PdfReader(uploaded_file_pdf[0])
+    pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
     for i in pages:
       # text.append(i.extract_text())
@@ -58,7 +58,11 @@ with st.form('my_form'):
     vectordb.persist()
     memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k'))
     pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.7,model_name='gpt-3.5-turbo-16k') , vectordb.as_retriever(),memory=memory)
-  
+  else:
+    try:
+      vectordb.delete_collection()
+    except:
+      pass
   if len(uploaded_file_pdf)!=0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
   if len(uploaded_file_pdf)==0  and submitted and openai_api_key.startswith('sk-'):
