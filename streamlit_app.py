@@ -39,7 +39,7 @@ def summarize_text(text):
 
   prompt =   [{"role": "user", "content": f"Summarize this in 4 sentences:\n{text}"}]
   response = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo", 
+      model="gpt-3.5-turbo-16k", 
       messages=prompt,
       temperature=0.2, 
       max_tokens=135,
