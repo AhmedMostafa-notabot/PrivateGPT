@@ -59,11 +59,12 @@ with st.form('my_form'):
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
+    minstep=min(pages,10)
     for i in pages:
       text.append(preprocess(i.extract_text()))
-    for i in range(0,len(text),5):
+    for i in range(0,len(text),minstep):
       try:
-        sumtext.append(summarize_text(''.join(text[i:i+5])))
+        sumtext.append(summarize_text(''.join(text[i:i+minstep])))
       except:
         break
     embeddings = OpenAIEmbeddings()
