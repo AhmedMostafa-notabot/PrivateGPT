@@ -36,12 +36,12 @@ def preprocess(text):
 
 def summarize_text(text):
 
-  prompt =   [{"role": "user", "content": f"Summarize this in 5 sentences:\n{text}"}]
+  prompt =   [{"role": "user", "content": f"Summarize this in 7 sentences:\n{text}"}]
   response = openai.ChatCompletion.create(
       model="gpt-3.5-turbo", 
       messages=prompt,
       temperature=0.2, 
-      max_tokens=135, # = 112 words
+      max_tokens=150, # = 112 words
       top_p=0.9, 
       frequency_penalty=1,
       presence_penalty=0
@@ -55,13 +55,17 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if uploaded_file_pdf is not None:
-    # text=[]
+    text=[]
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
     for i in pages:
-      # text.append(i.extract_text())
-      sumtext.append(summarize_text(preprocess(i.extract_text())))
+      text.append(preprocess(i.extract_text()))
+    for i in range(0,len(text),5):
+      try:
+        sumtext.append(summarize_text(''.join(text[i:i+5])))
+      except:
+        break
     embeddings = OpenAIEmbeddings()
     vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
