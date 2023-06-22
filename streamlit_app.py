@@ -27,7 +27,7 @@ def generate_response2(input_text):
 def summarize_text(text):
   prompt = f"Summarize the following text in 6 sentences:\n{text}"
 
-  response = openai.Completion.create(
+  response = openai.ChatCompletion.create(
       engine="gpt-3.5-turbo", 
       prompt=prompt,
       temperature=0.4, 
