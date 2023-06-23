@@ -76,7 +76,11 @@ with st.form('my_form'):
     for i in pages:
       stext.append(i.extract_text())
     finaltext=''.join(stext)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = min(ceil(61800*(len(pages)/1000)),61800), chunk_overlap = 0)
+    if(len(pages)<=120):
+      chunk=10000
+    else:
+      chunk=min(ceil(61800*(len(pages)/1000)),61800)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
     texts = text_splitter.create_documents([finaltext])
     chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
     sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
