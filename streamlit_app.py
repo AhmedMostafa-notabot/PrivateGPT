@@ -74,7 +74,7 @@ with st.form('my_form'):
     minstep=min(len(pages),20)
     for i in pages:
       text.append(i.extract_text())
-      finaltext=''.join(text)
+    finaltext=''.join(text)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 9000, chunk_overlap = 0)
     texts = text_splitter.create_documents([finaltext])
     chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
