@@ -70,9 +70,9 @@ with st.form('my_form'):
     stext=[]
     sumtext=[]
     pdf = PdfReader(uploaded_file_pdf)
-    pages=pdf.pages
-    minstep=min(len(pages),20)
-    for i in pages:
+    # pages=pdf.pages
+    # minstep=min(len(pages),20)
+    for i in pdf.flattened_pages:
       stext.append(i.extract_text())
     finaltext=''.join(stext)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 9000, chunk_overlap = 0)
