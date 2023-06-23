@@ -27,9 +27,8 @@ def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
-  # topk=vectordb.similarity_search(str(input_text), k=1)
-  # sumvectordb=Chroma.from_documents(topk, embedding=embeddings, 
-  #                                    persist_directory=".")
+  topk=vectordb.similarity_search(str(input_text), k=1)
+  sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
     # vectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
@@ -80,7 +79,7 @@ with st.form('my_form'):
     texts = text_splitter.create_documents([finaltext])
     chain = load_summarize_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k',max_tokens=135), chain_type="refine")
     sumtext=chain.run(texts)
-    print(sumtext)
+    # print(sumtext)
     # for i in range(0,len(text),minstep):
     #   try:
     #     sumtext.append(summarize_text(''.join(text[i:i+minstep])))
