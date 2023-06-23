@@ -72,12 +72,12 @@ with st.form('my_form'):
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
     minstep=min(len(pages),20)
-    for i in pages:
+    for i in pages[1:-1]:
       text.append(i.extract_text())
       finaltext=''.join(text)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 2000, chunk_overlap = 0)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 8000, chunk_overlap = 0)
     texts = text_splitter.create_documents([finaltext])
-    chain = load_summarize_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k',max_tokens=135), chain_type="refine")
+    chain = load_summarize_chain(llm=OpenAI(temperature=0.5,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0,top_p=0.85), chain_type="refine")
     sumtext=chain.run(texts)
     # print(sumtext)
     # for i in range(0,len(text),minstep):
