@@ -91,7 +91,8 @@ with st.form('my_form'):
     try:
       vectordb.delete_collection()
       # sumvectordb.delete_collection()
-      # chat_history=[]
+      stext=None
+      sumtext=None
     except:
       pass
   if uploaded_file_pdf is not None and submitted and openai_api_key.startswith('sk-'):
