@@ -72,7 +72,7 @@ with st.form('my_form'):
     pdf = PdfReader(uploaded_file_pdf)
     pages=pdf.pages
     minstep=min(len(pages),20)
-    for i in pages[1:-1]:
+    for i in pages:
       text.append(i.extract_text())
       finaltext=''.join(text)
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 8000, chunk_overlap = 0)
