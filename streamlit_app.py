@@ -7,9 +7,10 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import Chroma 
 from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationTokenBufferMemory
+# from langchain.memory import ConversationTokenBufferMemory
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.summarize import load_summarize_chain
+from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -27,18 +28,18 @@ def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
-  topk=vectordb.similarity_search(str(input_text), k=5)
-  sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
-  sumvectordb.persist()
+  topk=vectordb.get_relevant_documents(str(input_text))
+  # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
+  # sumvectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-  memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'))
-  pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'),
-                                                   sumvectordb.as_retriever(search_type='similarity',search_kwargs={"k":1}),memory=memory)
+  # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'))
+  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="refine")
+  pdf_qa.run(input_documents=topk, question=str(input_text))
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   # out=pdf_qa({'question': str(input_text)})['answer']
-  out=pdf_qa.run(str(input_text))
+  # out=pdf_qa.run(str(input_text))
   st.info(out)
   # history=[{str(input_text),out}]
   # return history
