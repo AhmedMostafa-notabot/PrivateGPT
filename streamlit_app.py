@@ -8,6 +8,8 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma 
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationTokenBufferMemory
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.chains.summarize import load_summarize_chain
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -25,9 +27,9 @@ def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".")
-  topk=vectordb.similarity_search(str(input_text), k=1)
-  sumvectordb=Chroma.from_documents(topk, embedding=embeddings, 
-                                     persist_directory=".")
+  # topk=vectordb.similarity_search(str(input_text), k=1)
+  # sumvectordb=Chroma.from_documents(topk, embedding=embeddings, 
+  #                                    persist_directory=".")
     # vectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
@@ -72,12 +74,18 @@ with st.form('my_form'):
     pages=pdf.pages
     minstep=min(len(pages),20)
     for i in pages:
-      text.append(preprocess(i.extract_text()))
-    for i in range(0,len(text),minstep):
-      try:
-        sumtext.append(summarize_text(''.join(text[i:i+minstep])))
-      except:
-        pass
+      text.append(i.extract_text())
+      finaltext=''.join(text)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 2000, chunk_overlap = 0)
+    texts = text_splitter.create_documents([finaltext])
+    chain = load_summarize_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k',max_tokens=135), chain_type="refine")
+    sumtext=chain.run(texts, return_only_outputs=True)
+    print(sumtext)
+    # for i in range(0,len(text),minstep):
+    #   try:
+    #     sumtext.append(summarize_text(''.join(text[i:i+minstep])))
+    #   except:
+    #     pass
     # ,memory=ConversationBufferWindowMemory(memory_key="chat_history",k=1,return_messages=True)
   else:
     try:
