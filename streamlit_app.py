@@ -1,6 +1,6 @@
 import streamlit as st
-import openai
-import re
+# import openai
+# import re
 # from langchain.llms import GPT4All
 from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
@@ -43,23 +43,23 @@ def generate_response2(input_text):
   # history=[{str(input_text),out}]
   # return history
   
-def preprocess(text):
-    text = text.replace('\n', ' ')
-    text = re.sub('\s+', ' ', text)
-    return text
+# def preprocess(text):
+#     text = text.replace('\n', ' ')
+#     text = re.sub('\s+', ' ', text)
+#     return text
 
-def summarize_text(text):
+# def summarize_text(text):
 
-  prompt =   [{"role": "user", "content": f"Summarize this in 5 sentences:\n{text}"}]
-  response = openai.ChatCompletion.create(
-      model="gpt-3.5-turbo-16k", 
-      messages=prompt,
-      temperature=0.2, 
-      max_tokens=100,
-      top_p=0.9
-  )
+#   prompt =   [{"role": "user", "content": f"Summarize this in 5 sentences:\n{text}"}]
+#   response = openai.ChatCompletion.create(
+#       model="gpt-3.5-turbo-16k", 
+#       messages=prompt,
+#       temperature=0.2, 
+#       max_tokens=100,
+#       top_p=0.9
+#   )
 
-  return response["choices"][0]['message']['content']
+#   return response["choices"][0]['message']['content']
 
 with st.form('my_form'):
   text = st.text_area('Enter text:', 'Ask Me Anything')
@@ -89,7 +89,7 @@ with st.form('my_form'):
   else:
     try:
       vectordb.delete_collection()
-      sumvectordb.delete_collection()
+      # sumvectordb.delete_collection()
       # chat_history=[]
     except:
       pass
