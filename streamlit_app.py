@@ -27,7 +27,7 @@ def generate_response(input_text):
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
-                                     persist_directory=".")
+                                     persist_directory=".").as_retriever()
   topk=vectordb.get_relevant_documents(str(input_text))
   # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
   # sumvectordb.persist()
