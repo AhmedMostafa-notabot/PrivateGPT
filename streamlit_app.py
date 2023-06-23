@@ -32,8 +32,8 @@ def generate_response2(input_text):
     # vectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-  memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
-  pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',max_tokens=135),
+  memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'))
+  pdf_qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'),
                                                    vectordb.as_retriever(search_type='similarity',search_kwargs={"k":1}),memory=memory)
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
@@ -75,7 +75,7 @@ with st.form('my_form'):
     for i in pages:
       text.append(i.extract_text())
       finaltext=''.join(text)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 8000, chunk_overlap = 0)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 9000, chunk_overlap = 0)
     texts = text_splitter.create_documents([finaltext])
     chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
     sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
