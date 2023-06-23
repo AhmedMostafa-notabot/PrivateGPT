@@ -35,7 +35,7 @@ def generate_response2(input_text):
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
   # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'))
   pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="refine")
-  pdf_qa.run(input_documents=topk, question=str(input_text))
+  out=pdf_qa.run(input_documents=topk, question=str(input_text))
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
   # out=pdf_qa({'question': str(input_text)})['answer']
