@@ -28,14 +28,14 @@ def generate_response(input_text):
 
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
-  vectordb = FAISS.from_texts(sumtext, embedding=embeddings)
+  vectordb = FAISS.from_documents(texts, embedding=embeddings)
   topk=vectordb.similarity_search(str(input_text),k=1)
   # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
   # sumvectordb.persist()
     # chat_history=[]
     # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.4,model_name='gpt-3.5-turbo-16k'))
   # memory = ConversationTokenBufferMemory(memory_key="chat_history", return_messages=True ,llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'))
-  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff")
+  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="refine")
   out=pdf_qa.run(input_documents=topk, question=str(input_text))
   # print(input_text)
 #   llm = GPT4All(model="./models/gpt4all-model.bin", n_ctx=512, n_threads=8)
@@ -90,9 +90,9 @@ with st.form('my_form'):
     texts = text_splitter.split_documents(pages)
     # texts = text_splitter.create_documents([finaltext])
     # , return_intermediate_steps=True
-    chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
-    # ,return_only_outputs=True)['intermediate_steps']
-    sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
+    # chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
+    # # ,return_only_outputs=True)['intermediate_steps']
+    # sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
     # print(sumtext)
     # for i in range(0,len(text),minstep):
     #   try:
