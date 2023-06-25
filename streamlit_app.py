@@ -91,7 +91,7 @@ with st.form('my_form'):
     texts = text_splitter.split_documents(pages)
     # texts = text_splitter.create_documents([finaltext])
     # , return_intermediate_steps=True
-    chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="stuff", return_intermediate_steps=True)
+    chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="refine", return_intermediate_steps=True)
     # ,return_only_outputs=True)['intermediate_steps']
     sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
     # print(sumtext)
