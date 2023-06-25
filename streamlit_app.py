@@ -10,7 +10,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 # from langchain.memory import ConversationTokenBufferMemory
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
@@ -29,7 +29,7 @@ def generate_response(input_text):
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = FAISS.from_texts(sumtext, embedding=embeddings)
-  topk=vectordb.similarity_search(str(input_text))
+  topk=vectordb.similarity_search(str(input_text),k=1)
   # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
   # sumvectordb.persist()
     # chat_history=[]
@@ -86,7 +86,7 @@ with st.form('my_form'):
     #   stext.append(i.extract_text())
     # finaltext=''.join(stext)
 
-    text_splitter = CharacterTextSplitter(chunk_size = chunk, chunk_overlap = 1000)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
     texts = text_splitter.split_documents(pages)
     # texts = text_splitter.create_documents([finaltext])
     # , return_intermediate_steps=True
