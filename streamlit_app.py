@@ -1,15 +1,16 @@
 import streamlit as st
 from math import ceil
+import tempfile
 # import openai
 # import re
 # from langchain.llms import GPT4All
 from PyPDF2 import PdfReader
 from langchain.document_loaders import PyPDFLoader 
 from langchain.embeddings import OpenAIEmbeddings 
-from langchain.vectorstores import Chroma 
+from langchain.vectorstores import FAISS
 from langchain.chains import ConversationalRetrievalChain
 # from langchain.memory import ConversationTokenBufferMemory
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.text_splitter import CharacterTextSplitter
 from langchain.chains.summarize import load_summarize_chain
 from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
@@ -27,9 +28,9 @@ def generate_response(input_text):
 
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
-  vectordb = Chroma.from_texts(sumtext, embedding=embeddings, 
+  vectordb = FAISS.from_documents(sumtext, embedding=embeddings, 
                                      persist_directory=".").as_retriever()
-  topk=vectordb.get_relevant_documents(str(input_text))
+  topk=vectordb.similarity_search(str(input_text))
   # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
   # sumvectordb.persist()
     # chat_history=[]
@@ -69,24 +70,30 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if uploaded_file_pdf is not None:
-    stext=[]
-    sumtext=[]
-    pdf = PdfReader(uploaded_file_pdf)
-    pages=pdf.pages
-    # minstep=min(len(pages),20)
-    for i in pages:
-      stext.append(i.extract_text())
-    finaltext=''.join(stext)
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+      tmp_file.write(uploaded_file_pdf.getvalue())
+      tmp_file_path = tmp_file.name
+    # stext=[]
+    # sumtext=[]
+    pdf = PyPDFLoader(tmp_file_path)
+    pages=pdf.load()
     if(len(pages)<=120):
       chunk=10000
     else:
       chunk=min(ceil(61800*(len(pages)/1000)),61800)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
-    texts = text_splitter.create_documents([finaltext])
+    
+    # minstep=min(len(pages),20)
+    # for i in pages:
+    #   stext.append(i.extract_text())
+    # finaltext=''.join(stext)
+
+    text_splitter = CharacterTextSplitter(chunk_size = chunk, chunk_overlap = 1000)
+    texts = text_splitter.split_documents(documents)
+    # texts = text_splitter.create_documents([finaltext])
     # , return_intermediate_steps=True
-    chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="stuff")
+    chain = load_summarize_chain(llm=OpenAI(temperature=0,model_name='gpt-3.5-turbo-16k',frequency_penalty=1,presence_penalty=0), chain_type="stuff", return_intermediate_steps=True)
     # ,return_only_outputs=True)['intermediate_steps']
-    sumtext=chain(texts)
+    sumtext=chain(texts,return_only_outputs=True)['intermediate_steps']
     # print(sumtext)
     # for i in range(0,len(text),minstep):
     #   try:
