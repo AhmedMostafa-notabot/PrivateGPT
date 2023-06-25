@@ -28,7 +28,7 @@ def generate_response(input_text):
 
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
-  vectordb = FAISS.from_documents(sumtext, embedding=embeddings, 
+  vectordb = FAISS.from_texts(sumtext, embedding=embeddings, 
                                      persist_directory=".").as_retriever()
   topk=vectordb.similarity_search(str(input_text))
   # sumvectordb=Chroma.from_documents(topk,embedding=embeddings,persist_directory=".")
