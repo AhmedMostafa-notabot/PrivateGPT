@@ -4,10 +4,11 @@ import tempfile
 from langchain.document_loaders import PyPDFLoader 
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
 # from langchain.chains import ConversationalRetrievalChain
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.chains.summarize import load_summarize_chain
-from langchain.chains.question_answering import load_qa_chain
+# from langchain.chains.summarize import load_summarize_chain
+# from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 
 st.title('🦜 VNCR-GPT')
@@ -21,9 +22,12 @@ def generate_response(input_text):
 def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = FAISS.from_documents(texts, embedding=embeddings)
-  topk=vectordb.similarity_search(str(input_text),k=1)
-  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff")
-  out=pdf_qa.run(input_documents=topk, question=str(input_text))
+  retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":2})
+  # topk=vectordb.similarity_search(str(input_text),k=1)
+  # pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff")
+  # out=pdf_qa.run(input_documents=topk, question=str(input_text))
+  pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
+  out=pdf_qa({"query": query})
   st.info(out)
   
 
