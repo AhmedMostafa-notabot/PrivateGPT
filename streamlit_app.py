@@ -36,7 +36,7 @@ with st.form('my_form'):
     for uploadfile in uploaded_file_pdf:
       with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
         tmp_file.write(uploadfile.getvalue())
-        tmp_file_path = uploadfile.name
+        tmp_file_path = tmp_file.name
       pdf = PyPDFLoader(tmp_file_path)
       pages= pdf.load()
       if(len(pages)<=120):
@@ -45,8 +45,8 @@ with st.form('my_form'):
         chunk=min(ceil(61800*(len(pages)/1000)),61800)
       text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
       texts = text_splitter.split_documents(pages)
-      # for i in texts:
-      #   i['metadata']['source']=uploadfile.name
+      for i in texts:
+        i['metadata']['source']=uploadfile.name
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
