@@ -20,10 +20,9 @@ def generate_response(input_text):
 
 def generate_response2(input_text):
   out=pdf_qa({"query": str(input_text)})
-  # res=out['result']
-  # ref=''.join([i.page_content for i in out['source_documents']])
-  # st.info(res+' \n \n '+"Reference:"+ref)
-  st.info(out)
+  res=out['result']
+  ref=''.join(["\n "+ "Source: \n" + i.metadata['source'] +"\n "+ i.page_content for i in out['source_documents']])
+  st.info(res+' \n \n '+"Reference:"+ref)
   
 
 with st.form('my_form'):
@@ -49,7 +48,7 @@ with st.form('my_form'):
         i.metadata['source']=uploadfile.name
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
-    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":3})
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
