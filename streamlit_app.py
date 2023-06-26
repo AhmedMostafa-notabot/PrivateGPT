@@ -47,7 +47,7 @@ with st.form('my_form'):
       texts = text_splitter.split_documents(pages)
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
-    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":2})
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
