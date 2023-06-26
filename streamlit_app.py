@@ -22,7 +22,7 @@ def generate_response2(input_text):
   embeddings = OpenAIEmbeddings()
   vectordb = FAISS.from_documents(texts, embedding=embeddings)
   topk=vectordb.similarity_search(str(input_text),k=1)
-  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="refine")
+  pdf_qa = load_qa_chain(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="refine", return_source_documents=True)
   out=pdf_qa.run(input_documents=topk, question=str(input_text))
   st.info(out)
   
