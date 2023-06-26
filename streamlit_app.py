@@ -20,7 +20,7 @@ def generate_response2(input_text):
   out=pdf_qa({"query": str(input_text)})
   res=out['result']
   ref=''.join([i.page_content for i in out['source_documents']])
-  st.info(res+'\n'+ref)
+  st.info(res+'\n'+"Reference:"+ref)
   
 
 with st.form('my_form'):
