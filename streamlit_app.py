@@ -35,7 +35,7 @@ with st.form('my_form'):
         tmp_file.write(uploadfile.getvalue())
         tmp_file_path = tmp_file.name
       pdf = PyPDFLoader(tmp_file_path)
-      pages.append(pdf.load())
+      pages.extend(pdf.load())
     if(len(pages)<=120):
       chunk=10000
     else:
