@@ -28,7 +28,7 @@ with st.form('my_form'):
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
-  if uploaded_file_pdf is not None:
+  if len(uploaded_file_pdf) != 0:
     pages=[]
     for uploadfile in uploaded_file_pdf:
       with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
@@ -51,7 +51,7 @@ with st.form('my_form'):
       vectordb.delete_collection()
     except:
       pass
-  if uploaded_file_pdf is not None and submitted and openai_api_key.startswith('sk-'):
+  if len(uploaded_file_pdf) != 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response2(text)
-  if uploaded_file_pdf is None and submitted and openai_api_key.startswith('sk-'):
+  if len(uploaded_file_pdf) == 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
