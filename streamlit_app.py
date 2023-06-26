@@ -29,21 +29,22 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf) != 0:
-    pages=[]
+    docs=[]
     for uploadfile in uploaded_file_pdf:
       with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
         tmp_file.write(uploadfile.getvalue())
         tmp_file_path = tmp_file.name
       pdf = PyPDFLoader(tmp_file_path)
-      pages.extend(pdf.load())
-    if(len(pages)<=120):
-      chunk=10000
-    else:
-      chunk=min(ceil(61800*(len(pages)/1000)),61800)
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
-    texts = text_splitter.split_documents(pages)
+      pages= pdf.load()
+      if(len(pages)<=120):
+        chunk=10000
+      else:
+        chunk=min(ceil(61800*(len(pages)/1000)),61800)
+      text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
+      texts = text_splitter.split_documents(pages)
+      docs.append(texts)
     embeddings = OpenAIEmbeddings()
-    vectordb = FAISS.from_documents(texts, embedding=embeddings)
+    vectordb = FAISS.from_documents(docs, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":2})
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
