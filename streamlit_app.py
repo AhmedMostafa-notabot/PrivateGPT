@@ -17,7 +17,6 @@ def generate_response(input_text):
   st.info(llm(str(input_text)))
 
 def generate_response2(input_text):
-  pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   out=pdf_qa({"query": str(input_text)})
   res=out['result']
   ref=''.join([i.page_content for i in out['source_documents']])
@@ -44,6 +43,7 @@ with st.form('my_form'):
     embeddings = OpenAIEmbeddings()
     vectordb = FAISS.from_documents(texts, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
+    pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
       vectordb.delete_collection()
