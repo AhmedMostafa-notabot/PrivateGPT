@@ -46,7 +46,7 @@ with st.form('my_form'):
       text_splitter = RecursiveCharacterTextSplitter(chunk_size = chunk, chunk_overlap = 0)
       texts = text_splitter.split_documents(pages)
       for i in texts:
-        i['metadata']['source']=uploadfile.name
+        i.metadata.source=uploadfile.name
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
