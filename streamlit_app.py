@@ -11,7 +11,7 @@ from langchain.llms import OpenAI
 st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
-uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"])
+uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"],accept_multiple_files=True)
 def generate_response(input_text):
   llm = OpenAI(temperature=0.5, openai_api_key=openai_api_key)
   st.info(llm(str(input_text)))
@@ -29,11 +29,13 @@ with st.form('my_form'):
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if uploaded_file_pdf is not None:
-    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-      tmp_file.write(uploaded_file_pdf.getvalue())
-      tmp_file_path = tmp_file.name
-    pdf = PyPDFLoader(tmp_file_path)
-    pages=pdf.load()
+    pages=[]
+    for uploadfile in uploaded_file_pdf:
+      with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file.write(uploaded_file_pdf.getvalue())
+        tmp_file_path = tmp_file.name
+      pdf = PyPDFLoader(tmp_file_path)
+      pages.append(pdf.load())
     if(len(pages)<=120):
       chunk=10000
     else:
