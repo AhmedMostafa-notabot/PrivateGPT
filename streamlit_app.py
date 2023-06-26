@@ -32,7 +32,7 @@ with st.form('my_form'):
     pages=[]
     for uploadfile in uploaded_file_pdf:
       with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-        tmp_file.write(uploaded_file_pdf.getvalue())
+        tmp_file.write(uploadfile.getvalue())
         tmp_file_path = tmp_file.name
       pdf = PyPDFLoader(tmp_file_path)
       pages.append(pdf.load())
@@ -44,7 +44,7 @@ with st.form('my_form'):
     texts = text_splitter.split_documents(pages)
     embeddings = OpenAIEmbeddings()
     vectordb = FAISS.from_documents(texts, embedding=embeddings)
-    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":2})
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
