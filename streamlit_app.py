@@ -19,7 +19,9 @@ def generate_response(input_text):
 def generate_response2(input_text):
   pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   out=pdf_qa({"query": str(input_text)})
-  st.info(out)
+  res=out['result']
+  ref=''.join([i.page_content for i in out['source_documents']])
+  st.info(res+'\n'+ref)
   
 
 with st.form('my_form'):
@@ -41,7 +43,7 @@ with st.form('my_form'):
     texts = text_splitter.split_documents(pages)
     embeddings = OpenAIEmbeddings()
     vectordb = FAISS.from_documents(texts, embedding=embeddings)
-    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":2})
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
   else:
     try:
       vectordb.delete_collection()
