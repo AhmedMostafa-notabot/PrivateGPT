@@ -7,6 +7,7 @@ from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
+from streamlit_chat import message
 
 st.title('🦜 VNCR-GPT')
 
