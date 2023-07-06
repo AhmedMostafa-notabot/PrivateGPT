@@ -27,7 +27,8 @@ def generate_response2(input_text):
   
 
 with st.form('my_form'):
-  text = st.text_area('Enter text:', 'Ask Me Anything')
+  # text = st.text_area('Enter text:', 'Ask Me Anything')
+  text=st.chat_input("Say something")
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
