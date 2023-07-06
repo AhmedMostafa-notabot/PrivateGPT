@@ -11,7 +11,8 @@ from langchain.llms import OpenAI
 st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
-uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"],accept_multiple_files=True)
+uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files For 1st Side Of Debate",type=["pdf"],accept_multiple_files=True)
+uploaded_file_pdf2 = st.sidebar.file_uploader("Upload PDF Files For 2nd Side Of Debate",type=["pdf"],accept_multiple_files=True)
 embeddings = OpenAIEmbeddings()
 
 def generate_response(input_text):
