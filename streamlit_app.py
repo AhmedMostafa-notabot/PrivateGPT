@@ -14,7 +14,7 @@ st.title('🦜 VNCR-GPT')
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
 uploaded_file_pdf = st.sidebar.file_uploader("Upload PDF Files",type=["pdf"],accept_multiple_files=True)
 # uploaded_file_pdf2 = st.sidebar.file_uploader("Upload PDF Files For 2nd Side Of Debate",type=["pdf"],accept_multiple_files=True)
-embeddings = OpenAIEmbeddings()
+embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
 
 def generate_response(input_text):
   llm = OpenAI(temperature=0.5, openai_api_key=openai_api_key)
@@ -52,7 +52,7 @@ with st.form('my_form'):
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":3})
-    pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
+    pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key,temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
       vectordb.delete_collection()
