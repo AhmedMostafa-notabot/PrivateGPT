@@ -5,7 +5,3 @@ pypdf
 langchain
 tiktoken
 faiss-cpu
-polyglot
-pyicu
-pycld2
-morfessor
