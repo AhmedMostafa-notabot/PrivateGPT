@@ -11,7 +11,7 @@ from langchain.llms import OpenAI
 from streamlit_chat import message
 
 st.set_page_config(layout="wide")
-st.title('📚 PrivateGPT')
+st.title('📚 :violet[Private]GPT')
 
 st.sidebar.title('DocumentGPT')
 openai_api_key = st.sidebar.text_input('Insert OpenAI API Key',type="password")
