@@ -10,7 +10,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from streamlit_chat import message
 
-st.set_page_config(layout="wide",page_title="Private-GPT",initial_sidebar_state="collapsed")
+st.set_page_config(layout="wide",page_title="Ex-stream-ly Cool App",initial_sidebar_state="collapsed")
 st.title('📚 :violet[Private]GPT')
 
 st.sidebar.title('Settings')
