@@ -92,13 +92,4 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-css = '''
-<style>
-    [data-testid="ScrollToBottomContainer"] {
-        overflow: hidden;
-    }
-</style>
-'''
-
-st.markdown(css, unsafe_allow_html=True)
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
