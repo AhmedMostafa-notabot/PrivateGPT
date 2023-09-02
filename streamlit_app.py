@@ -1,6 +1,7 @@
 import streamlit as st
 from math import ceil
 import tempfile
+import tiktoken
 from langchain.document_loaders import PyPDFLoader,Docx2txtLoader
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import FAISS
@@ -58,6 +59,9 @@ with st.form('my_form'):
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
     retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
+    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-16k")
+    res = " ".join([str(item.page_content) for item in docs])
+    Numtokens = encoding.encode(res)
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key,temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
