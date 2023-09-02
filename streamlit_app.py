@@ -69,8 +69,8 @@ with st.form('my_form'):
     except:
       pass
   if len(uploaded_file_pdf) != 0 and submitted and openai_api_key.startswith('sk-'):
-    with st.status("Reading Your Documents..."):
+      msg = st.toast('Gathering Information 🤓')
       generate_response2(text)
-      st.write("Got It..")
+      st.toast("Got It ✅")
   if len(uploaded_file_pdf) == 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
