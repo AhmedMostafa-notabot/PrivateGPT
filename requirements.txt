@@ -2,6 +2,7 @@ streamlit
 streamlit_chat
 openai
 pypdf
+docx2txt
 langchain
 tiktoken
 faiss-cpu
