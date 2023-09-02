@@ -86,3 +86,10 @@ st.markdown("""
 3) You Can Upload Documents From The Sidebar & Ask Related Questions
 4) :red[Experimental]: Arabic DOCX Documents Supported
 """)
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
