@@ -23,9 +23,7 @@ def generate_response(input_text):
 
 def generate_response2(input_text):
   out=pdf_qa({"query": str(input_text)})
-  with st.status("Reading Your Files..."):
     res=out['result']
-    st.write("Got It..")
   ref=''.join(["\n\n "+ "Source: \n" + i.metadata['source']+f"  page {i.metadata['page']+1}"+"\n" +"\n Content:"+"\n\n"+ i.page_content for i in out['source_documents']])
   st.info(res+' \n \n '+"Reference: \n "+ref)
   
@@ -71,6 +69,8 @@ with st.form('my_form'):
     except:
       pass
   if len(uploaded_file_pdf) != 0 and submitted and openai_api_key.startswith('sk-'):
-    generate_response2(text)
+    with st.status("Reading Your Documents..."):
+      generate_response2(text)
+      st.write("Got It..")
   if len(uploaded_file_pdf) == 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
