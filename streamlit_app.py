@@ -90,7 +90,7 @@ hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            .viewerBadge_container__r5tak styles_viewerBadge__CvC9N {display:none !important;}
+            .viewerBadge_container__r5tak styles_viewerBadge__CvC9N {display:none !important; visibility:hidden;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
