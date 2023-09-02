@@ -29,11 +29,10 @@ def generate_response2(input_text):
   
 
 with st.form('my_form'):
-  Numtokens=0
+  # Numtokens=0
   text = st.text_area('Enter text:', 'Ask Me Anything')
   # text=st.chat_input("Say something")
   submitted = st.form_submit_button('Submit')
-  st.sidebar.caption(f'Tokens:{Numtokens}')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf) != 0:
@@ -62,6 +61,7 @@ with st.form('my_form'):
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-16k")
     res = " ".join([str(item.page_content) for item in docs])
     Numtokens = encoding.encode(res)
+    st.sidebar.caption(f'Tokens:{Numtokens}')
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key,temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
