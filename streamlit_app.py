@@ -33,6 +33,15 @@ def generate_response2(input_text):
 with st.form('my_form'):
   # Numtokens=0
   text = st.text_area('Enter text:', 'Upload Documents & Ask Me')
+  st.markdown("""
+* Fruit
+  * Apple
+* Orange
+  * Banana
+* Dairy
+  * Milk
+* Cheese
+""")
   # text=st.chat_input("Say something")
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
