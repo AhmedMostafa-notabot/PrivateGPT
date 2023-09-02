@@ -61,7 +61,7 @@ with st.form('my_form'):
     encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-16k")
     res = " ".join([str(item.page_content) for item in docs])
     Numtokens = encoding.encode(res)
-    st.sidebar.caption(f'Tokens:{Numtokens}')
+    st.sidebar.caption(f'Tokens:{len(Numtokens)}')
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key,temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
