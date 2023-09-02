@@ -26,7 +26,10 @@ def generate_response(input_text):
 def generate_response2(input_text):
   out=pdf_qa({"query": str(input_text)})
   res=out['result']
-  ref=''.join(["\n\n "+ "Source: \n" + i.metadata['source']+f"  page {i.metadata['page']+1}"+"\n" +"\n Content:"+"\n\n"+ i.page_content for i in out['source_documents']])
+  try:
+    ref=''.join(["\n\n "+ "Source: \n" + i.metadata['source']+f"  page {i.metadata['page']+1}"+"\n" +"\n Content:"+"\n\n"+ i.page_content for i in out['source_documents']])
+  except:
+    ref=''.join(["\n\n "+ "Source: \n" + i.metadata['source']+"\n" +"\n Content:"+"\n\n"+ i.page_content for i in out['source_documents']])
   st.info(res+' \n \n '+"Reference: \n "+ref)
   
 
