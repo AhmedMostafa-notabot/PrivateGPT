@@ -10,7 +10,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from streamlit_chat import message
 
-st.title(':sunglasses: PrivateGPT')
+st.title('📚 PrivateGPT')
 
 st.sidebar.title('DocumentGPT')
 openai_api_key = st.sidebar.text_input('Insert OpenAI API Key',type="password")
