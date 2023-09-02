@@ -12,7 +12,6 @@ from streamlit_chat import message
 st.title('🦜 VNCR-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
-st.sidebar.caption('This is a string that explains something above.')
 uploaded_file_pdf = st.sidebar.file_uploader("Upload Documents",type=["pdf","docx","doc"],accept_multiple_files=True)
 # uploaded_file_pdf2 = st.sidebar.file_uploader("Upload PDF Files For 2nd Side Of Debate",type=["pdf"],accept_multiple_files=True)
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
@@ -29,9 +28,11 @@ def generate_response2(input_text):
   
 
 with st.form('my_form'):
+  Numtokens=0
   text = st.text_area('Enter text:', 'Ask Me Anything')
   # text=st.chat_input("Say something")
   submitted = st.form_submit_button('Submit')
+  st.sidebar.caption(f'Tokens:{Numtokens}')
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
   if len(uploaded_file_pdf) != 0:
