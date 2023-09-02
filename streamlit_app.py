@@ -33,15 +33,6 @@ def generate_response2(input_text):
 with st.form('my_form'):
   # Numtokens=0
   text = st.text_area('Enter text:', 'Upload Documents & Ask Me')
-  st.markdown("""
-* Fruit
-  * Apple
-* Orange
-  * Banana
-* Dairy
-  * Milk
-* Cheese
-""")
   # text=st.chat_input("Say something")
   submitted = st.form_submit_button('Submit')
   if not openai_api_key.startswith('sk-'):
@@ -85,3 +76,12 @@ with st.form('my_form'):
       st.toast("Got It ✅")
   if len(uploaded_file_pdf) == 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
+st.markdown("""
+* Fruit
+  * Apple
+* Orange
+  * Banana
+* Dairy
+  * Milk
+* Cheese
+""")
