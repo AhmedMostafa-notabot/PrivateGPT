@@ -81,9 +81,10 @@ with st.form('my_form'):
     generate_response(text)
 st.markdown("""
 **:green[Instructions]**
-2) You Can Ask Any Questions Without Uploading Documents
-3) You Can Upload Documents From The Sidebar & Ask Related Questions
-4) :red[Experimental]: Arabic DOCX Documents Supported
+1) Add API Key.
+2) You Can Ask Any Questions Without Uploading Documents.
+3) You Can Upload Documents From The Sidebar & Ask Related Questions.
+4) :red[Experimental]: Arabic DOCX Documents Supported.
 """)
 hide_streamlit_style = """
             <style>
