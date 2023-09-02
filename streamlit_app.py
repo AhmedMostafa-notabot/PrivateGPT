@@ -77,11 +77,8 @@ with st.form('my_form'):
   if len(uploaded_file_pdf) == 0 and submitted and openai_api_key.startswith('sk-'):
     generate_response(text)
 st.markdown("""
-* Fruit
-  * Apple
-* Orange
-  * Banana
-* Dairy
-  * Milk
-* Cheese
+1) Add The API Key
+2) You Can Ask Any Questions Without Uploading Documents
+3) You Can Upload Documents From The Sidebar & Ask Related Questions
+4) :red[Experimental]: Arabic DOCX Documents Supported
 """)
