@@ -10,7 +10,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.llms import OpenAI
 from streamlit_chat import message
 
-st.title(':sunglasses: Private-GPT')
+st.title(':sunglasses: :pink[Private]-GPT')
 
 openai_api_key = st.sidebar.text_input('OpenAI API Key!',type="password")
 uploaded_file_pdf = st.sidebar.file_uploader("Upload Documents",type=["pdf","docx","doc"],accept_multiple_files=True)
