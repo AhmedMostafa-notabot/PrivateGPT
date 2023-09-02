@@ -1,7 +1,7 @@
 import streamlit as st
 from math import ceil
 import tempfile
-from langchain.document_loaders import PyPDFLoader 
+from langchain.document_loaders import PyPDFLoader,Docx2txtLoader
 from langchain.embeddings import OpenAIEmbeddings 
 from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
@@ -40,7 +40,11 @@ with st.form('my_form'):
         tmp_file.write(uploadfile.getvalue())
         tmp_file_path = tmp_file.name
       pdf = PyPDFLoader(tmp_file_path)
-      pages= pdf.load()
+      try:
+        pages= pdf.load()
+      except:
+        loader = Docx2txtLoader(tmp_file_path)
+        pages = loader.load()
       if(len(pages)<=120):
         chunk=10000
       else:
@@ -51,7 +55,7 @@ with st.form('my_form'):
         i.metadata['source']=uploadfile.name
       docs.extend(texts)
     vectordb = FAISS.from_documents(docs, embedding=embeddings)
-    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":3})
+    retriever = vectordb.as_retriever(search_type="similarity", search_kwargs={"k":1})
     pdf_qa= RetrievalQA.from_chain_type(llm=OpenAI(openai_api_key=openai_api_key,temperature=0.2,model_name='gpt-3.5-turbo-16k'), chain_type="stuff", retriever=retriever, return_source_documents=True)
   else:
     try:
