@@ -14,7 +14,7 @@ st.title(':sunglasses: PrivateGPT')
 
 st.sidebar.title('DocumentGPT')
 openai_api_key = st.sidebar.text_input('First Insert OpenAI API Key',type="password")
-uploaded_file_pdf = st.sidebar.file_uploader("Second Upload Documents",type=["pdf","docx","doc"],accept_multiple_files=True)
+uploaded_file_pdf = st.sidebar.file_uploader("Then Upload Documents",type=["pdf","docx","doc"],accept_multiple_files=True)
 # uploaded_file_pdf2 = st.sidebar.file_uploader("Upload PDF Files For 2nd Side Of Debate",type=["pdf"],accept_multiple_files=True)
 embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
 
